@@ -2,13 +2,13 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: crud_funcionarios
-      POSTGRES_USER: crud_user
-      POSTGRES_PASSWORD: crud_password
+      POSTGRES_DB: ${POSTGRES_DB:-crud_funcionarios}
+      POSTGRES_USER: ${POSTGRES_USER:-crud_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crud_password}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U crud_user -d crud_funcionarios"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-crud_user} -d $${POSTGRES_DB:-crud_funcionarios}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -16,8 +16,8 @@ services:
   web:
     build: .
     environment:
-      DATABASE_URL: postgresql+psycopg://crud_user:crud_password@db:5432/crud_funcionarios
-      SECRET_KEY: chave-local-desenvolvimento
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://crud_user:crud_password@db:5432/crud_funcionarios}
+      SECRET_KEY: ${SECRET_KEY:-chave-local-desenvolvimento}
     ports:
       - "5000:5000"
     depends_on:
