@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Funcionários | CRUD{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="actions">
+    <h2 style="margin:0 auto 0 0">Funcionários cadastrados</h2>
+    <a class="btn" href="{{ url_for('novo') }}">+ Novo funcionário</a>
+  </div>
+  {% if funcionarios %}
+  <table>
+    <thead><tr><th>Nome</th><th>CPF</th><th>Ações</th></tr></thead>
+    <tbody>
+    {% for funcionario in funcionarios %}
+      <tr>
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.cpf[:3] }}.{{ funcionario.cpf[3:6] }}.{{ funcionario.cpf[6:9] }}-{{ funcionario.cpf[9:] }}</td>
+        <td><div class="actions">
+          <a class="btn secondary" href="{{ url_for('editar', funcionario_id=funcionario.id) }}">Editar</a>
+          <form class="inline" method="post" action="{{ url_for('excluir', funcionario_id=funcionario.id) }}" onsubmit="return confirm('Deseja realmente excluir este funcionário?')">
+            <button class="btn danger" type="submit">Excluir</button>
+          </form>
+        </div></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">Nenhum funcionário cadastrado. Clique em “Novo funcionário” para começar.</p>
+  {% endif %}
+</section>
+{% endblock %}
