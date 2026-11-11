@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }} | CRUD{% endblock %}
+{% block content %}
+<section class="panel">
+  <h2>{{ titulo }}</h2>
+  <form method="post">
+    <label for="nome">Nome completo</label>
+    <input id="nome" name="nome" type="text" maxlength="120" required value="{{ request.form.get('nome', funcionario.nome if funcionario else '') }}" placeholder="Digite o nome do funcionário">
+    <label for="cpf">CPF</label>
+    <input id="cpf" name="cpf" type="text" inputmode="numeric" maxlength="14" required value="{{ request.form.get('cpf', funcionario.cpf if funcionario else '') }}" placeholder="000.000.000-00">
+    <p class="muted">Informe um CPF válido. O sistema armazena somente os 11 números.</p>
+    <div class="actions" style="margin-top:22px">
+      <button class="btn" type="submit">Salvar</button>
+      <a class="btn secondary" href="{{ url_for('index') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
